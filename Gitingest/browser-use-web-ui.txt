@@ -1,0 +1,2256 @@
+Directory structure:
+└── browser-use-web-ui/
+    ├── README.md
+    ├── LICENSE
+    ├── requirements.txt
+    ├── webui.py
+    ├── .env.example
+    ├── assets/
+    │   └── examples/
+    ├── src/
+    │   ├── __init__.py
+    │   ├── agent/
+    │   │   ├── __init__.py
+    │   │   ├── custom_agent.py
+    │   │   ├── custom_massage_manager.py
+    │   │   ├── custom_prompts.py
+    │   │   └── custom_views.py
+    │   ├── browser/
+    │   │   ├── __init__.py
+    │   │   ├── custom_browser.py
+    │   │   └── custom_context.py
+    │   ├── controller/
+    │   │   ├── __init__.py
+    │   │   └── custom_controller.py
+    │   └── utils/
+    │       ├── __init__.py
+    │       └── utils.py
+    └── tests/
+        ├── test_browser_use.py
+        ├── test_llm_api.py
+        └── test_playwright.py
+
+================================================
+File: /README.md
+================================================
+<img src="./assets/web-ui.png" alt="Browser Use Web UI" width="full"/>
+
+<br/>
+
+[![GitHub stars](https://img.shields.io/github/stars/browser-use/web-ui?style=social)](https://github.com/browser-use/web-ui/stargazers)
+[![Discord](https://img.shields.io/discord/1303749220842340412?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://link.browser-use.com/discord)
+[![Documentation](https://img.shields.io/badge/Documentation-📕-blue)](https://docs.browser-use.com)
+[![WarmShao](https://img.shields.io/twitter/follow/warmshao?style=social)](https://x.com/warmshao)
+
+This project builds upon the foundation of the [browser-use](https://github.com/browser-use/browser-use), which is designed to make websites accessible for AI agents.
+
+We would like to officially thank [WarmShao](https://github.com/warmshao) for his contribution to this project.
+
+**WebUI:** is built on Gradio and supports a most of `browser-use` functionalities. This UI is designed to be user-friendly and enables easy interaction with the browser agent.
+
+**Expanded LLM Support:** We've integrated support for various Large Language Models (LLMs), including: Gemini, OpenAI, Azure OpenAI, Anthropic, DeepSeek, Ollama etc. And we plan to add support for even more models in the future.
+
+**Custom Browser Support:** You can use your own browser with our tool, eliminating the need to re-login to sites or deal with other authentication challenges. This feature also supports high-definition screen recording.
+
+<video src="https://github.com/user-attachments/assets/56bc7080-f2e3-4367-af22-6bf2245ff6cb" controls="controls"  >Your browser does not support playing this video!</video>
+
+## Installation Guide
+
+Read the [quickstart guide](https://docs.browser-use.com/quickstart#prepare-the-environment) or follow the steps below to get started.
+
+> Python 3.11 or higher is required.
+
+First, we recommend using [uv](https://docs.astral.sh/uv/) to setup the Python environment.
+
+```bash
+uv venv --python 3.11
+```
+
+and activate it with:
+
+```bash
+source .venv/bin/activate
+```
+
+Install the dependencies:
+
+```bash
+uv pip install -r requirements.txt
+```
+
+Then install playwright:
+
+```bash
+playwright install
+```
+
+## Usage
+
+1.  **Run the WebUI:**
+    ```bash
+    python webui.py --ip 127.0.0.1 --port 7788
+    ```
+2.  **Access the WebUI:** Open your web browser and navigate to `http://127.0.0.1:7788`.
+3.  **Using Your Own Browser:**
+    - Close all chrome windows
+    - Open the WebUI in a non-Chrome browser, such as Firefox or Edge. This is important because the persistent browser context will use the Chrome data when running the agent.
+    - Check the "Use Own Browser" option within the Browser Settings.
+
+### Options:
+
+### `--theme`
+
+- **Type**: `str`
+- **Default**: `Ocean`
+- **Description**: Specifies the theme for the user interface.
+- **Options**:
+  The available themes are defined in the `theme_map` dictionary. Below are the options you can choose from:
+  - **Default**: The standard theme with a balanced design.
+  - **Soft**: A gentle, muted color scheme for a relaxed viewing experience.
+  - **Monochrome**: A grayscale theme with minimal color for simplicity and focus.
+  - **Glass**: A sleek, semi-transparent design for a modern appearance.
+  - **Origin**: A classic, retro-inspired theme for a nostalgic feel.
+  - **Citrus**: A vibrant, citrus-inspired palette with bright and fresh colors.
+  - **Ocean** (default): A blue, ocean-inspired theme providing a calming effect.
+
+**Example**:
+
+```bash
+python webui.py --ip 127.0.0.1 --port 7788 --theme Glass
+```
+
+### `--dark-mode`
+
+- **Type**: `boolean`
+- **Default**: Disabled
+- **Description**: Enables dark mode for the user interface. This is a simple toggle; including the flag activates dark mode, while omitting it keeps the interface in light mode.
+- **Options**:
+  - **Enabled (`--dark-mode`)**: Activates dark mode, switching the interface to a dark color scheme for better visibility in low-light environments.
+  - **Disabled (default)**: Keeps the interface in the default light mode.
+
+**Example**:
+
+```bash
+python webui.py --ip 127.0.0.1 --port 7788 --dark-mode
+```
+
+## (Optional) Configure Environment Variables
+
+Copy `.env.example` to `.env` and set your environment variables, including API keys for the LLM. With
+
+```bash
+cp .env.example .env
+```
+
+**If using your own browser:** - Set `CHROME_PATH` to the executable path of your browser and `CHROME_USER_DATA` to the user data directory of your browser.
+
+You can just copy examples down below to your `.env` file.
+
+### Windows
+
+```env
+CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
+CHROME_USER_DATA="C:\Users\YourUsername\AppData\Local\Google\Chrome\User Data"
+```
+
+> Note: Replace `YourUsername` with your actual Windows username for Windows systems.
+
+### Mac
+
+```env
+CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+CHROME_USER_DATA="~/Library/Application Support/Google/Chrome/Profile 1"
+```
+
+## Changelog
+
+- [x] **2025/01/06:** Thanks to @richard-devbot, a New and Well-Designed WebUI is released. [Video tutorial demo](https://github.com/warmshao/browser-use-webui/issues/1#issuecomment-2573393113).
+
+
+================================================
+File: /LICENSE
+================================================
+MIT License
+
+Copyright (c) 2024 Browser Use Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+================================================
+File: /requirements.txt
+================================================
+browser-use>=0.1.18
+langchain-google-genai>=2.0.8
+pyperclip
+gradio
+langchain-ollama
+
+
+
+================================================
+File: /webui.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: webui.py
+
+import pdb
+
+from dotenv import load_dotenv
+
+load_dotenv()
+import argparse
+import os
+
+import gradio as gr
+import argparse
+
+
+from gradio.themes import Base, Default, Soft, Monochrome, Glass, Origin, Citrus, Ocean
+import asyncio
+import os, glob
+from browser_use.agent.service import Agent
+from browser_use.browser.browser import Browser, BrowserConfig
+from browser_use.browser.context import (
+    BrowserContextConfig,
+    BrowserContextWindowSize,
+)
+from playwright.async_api import async_playwright
+
+from src.agent.custom_agent import CustomAgent
+from src.agent.custom_prompts import CustomSystemPrompt
+from src.browser.custom_browser import CustomBrowser
+from src.browser.custom_context import BrowserContextConfig
+from src.controller.custom_controller import CustomController
+from src.utils import utils
+from src.utils.utils import update_model_dropdown
+
+async def run_browser_agent(
+        agent_type,
+        llm_provider,
+        llm_model_name,
+        llm_temperature,
+        llm_base_url,
+        llm_api_key,
+        use_own_browser,
+        headless,
+        disable_security,
+        window_w,
+        window_h,
+        save_recording_path,
+        enable_recording,
+        task,
+        add_infos,
+        max_steps,
+        use_vision,
+        max_actions_per_step,
+        tool_call_in_content
+):
+    # Disable recording if the checkbox is unchecked
+    if not enable_recording:
+        save_recording_path = None
+
+    # Ensure the recording directory exists if recording is enabled
+    if save_recording_path:
+        os.makedirs(save_recording_path, exist_ok=True)
+
+    # Get the list of existing videos before the agent runs
+    existing_videos = set()
+    if save_recording_path:
+        existing_videos = set(
+            glob.glob(os.path.join(save_recording_path, "*.[mM][pP]4"))
+            + glob.glob(os.path.join(save_recording_path, "*.[wW][eE][bB][mM]"))
+        )
+
+    # Run the agent
+    llm = utils.get_llm_model(
+        provider=llm_provider,
+        model_name=llm_model_name,
+        temperature=llm_temperature,
+        base_url=llm_base_url,
+        api_key=llm_api_key,
+    )
+    if agent_type == "org":
+        final_result, errors, model_actions, model_thoughts = await run_org_agent(
+            llm=llm,
+            headless=headless,
+            disable_security=disable_security,
+            window_w=window_w,
+            window_h=window_h,
+            save_recording_path=save_recording_path,
+            task=task,
+            max_steps=max_steps,
+            use_vision=use_vision,
+            max_actions_per_step=max_actions_per_step,
+            tool_call_in_content=tool_call_in_content
+        )
+    elif agent_type == "custom":
+        final_result, errors, model_actions, model_thoughts = await run_custom_agent(
+            llm=llm,
+            use_own_browser=use_own_browser,
+            headless=headless,
+            disable_security=disable_security,
+            window_w=window_w,
+            window_h=window_h,
+            save_recording_path=save_recording_path,
+            task=task,
+            add_infos=add_infos,
+            max_steps=max_steps,
+            use_vision=use_vision,
+            max_actions_per_step=max_actions_per_step,
+            tool_call_in_content=tool_call_in_content
+        )
+    else:
+        raise ValueError(f"Invalid agent type: {agent_type}")
+
+    # Get the list of videos after the agent runs (if recording is enabled)
+    latest_video = None
+    if save_recording_path:
+        new_videos = set(
+            glob.glob(os.path.join(save_recording_path, "*.[mM][pP]4"))
+            + glob.glob(os.path.join(save_recording_path, "*.[wW][eE][bB][mM]"))
+        )
+        if new_videos - existing_videos:
+            latest_video = list(new_videos - existing_videos)[0]  # Get the first new video
+
+    return final_result, errors, model_actions, model_thoughts, latest_video
+
+
+async def run_org_agent(
+        llm,
+        headless,
+        disable_security,
+        window_w,
+        window_h,
+        save_recording_path,
+        task,
+        max_steps,
+        use_vision,
+        max_actions_per_step,
+        tool_call_in_content
+
+):
+    browser = Browser(
+        config=BrowserConfig(
+            headless=headless,
+            disable_security=disable_security,
+            extra_chromium_args=[f"--window-size={window_w},{window_h}"],
+        )
+    )
+    async with await browser.new_context(
+            config=BrowserContextConfig(
+                trace_path="./tmp/traces",
+                save_recording_path=save_recording_path if save_recording_path else None,
+                no_viewport=False,
+                browser_window_size=BrowserContextWindowSize(
+                    width=window_w, height=window_h
+                ),
+            )
+    ) as browser_context:
+        agent = Agent(
+            task=task,
+            llm=llm,
+            use_vision=use_vision,
+            browser_context=browser_context,
+            max_actions_per_step=max_actions_per_step,
+            tool_call_in_content=tool_call_in_content
+        )
+        history = await agent.run(max_steps=max_steps)
+
+        final_result = history.final_result()
+        errors = history.errors()
+        model_actions = history.model_actions()
+        model_thoughts = history.model_thoughts()
+    await browser.close()
+    return final_result, errors, model_actions, model_thoughts
+
+
+async def run_custom_agent(
+        llm,
+        use_own_browser,
+        headless,
+        disable_security,
+        window_w,
+        window_h,
+        save_recording_path,
+        task,
+        add_infos,
+        max_steps,
+        use_vision,
+        max_actions_per_step,
+        tool_call_in_content
+):
+    controller = CustomController()
+    playwright = None
+    browser_context_ = None
+    try:
+        if use_own_browser:
+            playwright = await async_playwright().start()
+            chrome_exe = os.getenv("CHROME_PATH", "")
+            chrome_use_data = os.getenv("CHROME_USER_DATA", "")
+
+            if chrome_exe == "":
+                chrome_exe = None
+            elif not os.path.exists(chrome_exe):
+                raise ValueError(f"Chrome executable not found at {chrome_exe}")
+            
+            if chrome_use_data == "":
+                chrome_use_data = None
+
+            browser_context_ = await playwright.chromium.launch_persistent_context(
+                user_data_dir=chrome_use_data,
+                executable_path=chrome_exe,
+                no_viewport=False,
+                headless=headless,  # 保持浏览器窗口可见
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"
+                ),
+                java_script_enabled=True,
+                bypass_csp=disable_security,
+                ignore_https_errors=disable_security,
+                record_video_dir=save_recording_path if save_recording_path else None,
+                record_video_size={"width": window_w, "height": window_h},
+            )
+        else:
+            browser_context_ = None
+
+        browser = CustomBrowser(
+            config=BrowserConfig(
+                headless=headless,
+                disable_security=disable_security,
+                extra_chromium_args=[f"--window-size={window_w},{window_h}"],
+            )
+        )
+        async with await browser.new_context(
+                config=BrowserContextConfig(
+                    trace_path="./tmp/result_processing",
+                    save_recording_path=save_recording_path
+                    if save_recording_path
+                    else None,
+                    no_viewport=False,
+                    browser_window_size=BrowserContextWindowSize(
+                        width=window_w, height=window_h
+                    ),
+                ),
+                context=browser_context_,
+        ) as browser_context:
+            agent = CustomAgent(
+                task=task,
+                add_infos=add_infos,
+                use_vision=use_vision,
+                llm=llm,
+                browser_context=browser_context,
+                controller=controller,
+                system_prompt_class=CustomSystemPrompt,
+                max_actions_per_step=max_actions_per_step,
+                tool_call_in_content=tool_call_in_content
+            )
+            history = await agent.run(max_steps=max_steps)
+
+            final_result = history.final_result()
+            errors = history.errors()
+            model_actions = history.model_actions()
+            model_thoughts = history.model_thoughts()
+
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+        final_result = ""
+        errors = str(e) + "\n" + traceback.format_exc()
+        model_actions = ""
+        model_thoughts = ""
+    finally:
+        # 显式关闭持久化上下文
+        if browser_context_:
+            await browser_context_.close()
+
+        # 关闭 Playwright 对象
+        if playwright:
+            await playwright.stop()
+        await browser.close()
+    return final_result, errors, model_actions, model_thoughts
+
+# Define the theme map globally
+theme_map = {
+    "Default": Default(),
+    "Soft": Soft(),
+    "Monochrome": Monochrome(),
+    "Glass": Glass(),
+    "Origin": Origin(),
+    "Citrus": Citrus(),
+    "Ocean": Ocean(),
+    "Base": Base()
+}
+
+
+def create_ui(theme_name="Ocean"):
+    css = """
+    .gradio-container {
+        max-width: 1200px !important;
+        margin: auto !important;
+        padding-top: 20px !important;
+    }
+    .header-text {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .theme-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    """
+
+    js = """
+    function refresh() {
+        const url = new URL(window.location);
+        if (url.searchParams.get('__theme') !== 'dark') {
+            url.searchParams.set('__theme', 'dark');
+            window.location.href = url.href;
+        }
+    }
+    """
+
+    with gr.Blocks(
+            title="Browser Use WebUI", theme=theme_map[theme_name], css=css, js=js
+    ) as demo:
+        with gr.Row():
+            gr.Markdown(
+                """
+                # 🌐 Browser Use WebUI
+                ### Control your browser with AI assistance
+                """,
+                elem_classes=["header-text"],
+            )
+
+        with gr.Tabs() as tabs:
+            with gr.TabItem("⚙️ Agent Settings", id=1):
+                with gr.Group():
+                    agent_type = gr.Radio(
+                        ["org", "custom"],
+                        label="Agent Type",
+                        value="custom",
+                        info="Select the type of agent to use",
+                    )
+                    max_steps = gr.Slider(
+                        minimum=1,
+                        maximum=200,
+                        value=100,
+                        step=1,
+                        label="Max Run Steps",
+                        info="Maximum number of steps the agent will take",
+                    )
+                    max_actions_per_step = gr.Slider(
+                        minimum=1,
+                        maximum=20,
+                        value=10,
+                        step=1,
+                        label="Max Actions per Step",
+                        info="Maximum number of actions the agent will take per step",
+                    )
+                    use_vision = gr.Checkbox(
+                        label="Use Vision",
+                        value=True,
+                        info="Enable visual processing capabilities",
+                    )
+                    tool_call_in_content = gr.Checkbox(
+                        label="Use Tool Calls in Content",
+                        value=True,
+                        info="Enable Tool Calls in content",
+                    )
+
+            with gr.TabItem("🔧 LLM Configuration", id=2):
+                with gr.Group():
+                    llm_provider = gr.Dropdown(
+                        ["anthropic", "openai", "deepseek", "gemini", "ollama", "azure_openai"],
+                        label="LLM Provider",
+                        value="",
+                        info="Select your preferred language model provider"
+                    )
+                    llm_model_name = gr.Dropdown(
+                        label="Model Name",
+                        value="",
+                        interactive=True,
+                        allow_custom_value=True,  # Allow users to input custom model names
+                        info="Select a model from the dropdown or type a custom model name"
+                    )
+                    llm_temperature = gr.Slider(
+                        minimum=0.0,
+                        maximum=2.0,
+                        value=1.0,
+                        step=0.1,
+                        label="Temperature",
+                        info="Controls randomness in model outputs"
+                    )
+                    with gr.Row():
+                        llm_base_url = gr.Textbox(
+                            label="Base URL",
+                            value=os.getenv(f"{llm_provider.value.upper()}_BASE_URL ", ""),  # Default to .env value
+                            info="API endpoint URL (if required)"
+                        )
+                        llm_api_key = gr.Textbox(
+                            label="API Key",
+                            type="password",
+                            value=os.getenv(f"{llm_provider.value.upper()}_API_KEY", ""),  # Default to .env value
+                            info="Your API key (leave blank to use .env)"
+                        )
+                    
+            with gr.TabItem("🌐 Browser Settings", id=3):
+                with gr.Group():
+                    with gr.Row():
+                        use_own_browser = gr.Checkbox(
+                            label="Use Own Browser",
+                            value=False,
+                            info="Use your existing browser instance",
+                        )
+                        headless = gr.Checkbox(
+                            label="Headless Mode",
+                            value=False,
+                            info="Run browser without GUI",
+                        )
+                        disable_security = gr.Checkbox(
+                            label="Disable Security",
+                            value=True,
+                            info="Disable browser security features",
+                        )
+                        enable_recording = gr.Checkbox(
+                            label="Enable Recording",
+                            value=True,
+                            info="Enable saving browser recordings",
+                        )
+
+                    with gr.Row():
+                        window_w = gr.Number(
+                            label="Window Width",
+                            value=1280,
+                            info="Browser window width",
+                        )
+                        window_h = gr.Number(
+                            label="Window Height",
+                            value=1100,
+                            info="Browser window height",
+                        )
+
+                    save_recording_path = gr.Textbox(
+                        label="Recording Path",
+                        placeholder="e.g. ./tmp/record_videos",
+                        value="./tmp/record_videos",
+                        info="Path to save browser recordings",
+                        interactive=True,  # Allow editing only if recording is enabled
+                    )
+
+            with gr.TabItem("🤖 Run Agent", id=4):
+                task = gr.Textbox(
+                    label="Task Description",
+                    lines=4,
+                    placeholder="Enter your task here...",
+                    value="go to google.com and type 'OpenAI' click search and give me the first url",
+                    info="Describe what you want the agent to do",
+                )
+                add_infos = gr.Textbox(
+                    label="Additional Information",
+                    lines=3,
+                    placeholder="Add any helpful context or instructions...",
+                    info="Optional hints to help the LLM complete the task",
+                )
+
+                with gr.Row():
+                    run_button = gr.Button("▶️ Run Agent", variant="primary", scale=2)
+                    stop_button = gr.Button("⏹️ Stop", variant="stop", scale=1)
+
+            with gr.TabItem("📊 Results", id=5):
+                recording_display = gr.Video(label="Latest Recording")
+
+                with gr.Group():
+                    gr.Markdown("### Results")
+                    with gr.Row():
+                        with gr.Column():
+                            final_result_output = gr.Textbox(
+                                label="Final Result", lines=3, show_label=True
+                            )
+                        with gr.Column():
+                            errors_output = gr.Textbox(
+                                label="Errors", lines=3, show_label=True
+                            )
+                    with gr.Row():
+                        with gr.Column():
+                            model_actions_output = gr.Textbox(
+                                label="Model Actions", lines=3, show_label=True
+                            )
+                        with gr.Column():
+                            model_thoughts_output = gr.Textbox(
+                                label="Model Thoughts", lines=3, show_label=True
+                            )
+            
+            with gr.TabItem("🎥 Recordings", id=6):
+                def list_recordings(save_recording_path):
+                    if not os.path.exists(save_recording_path):
+                        return []
+                    
+                    # Get all video files
+                    recordings = glob.glob(os.path.join(save_recording_path, "*.[mM][pP]4")) + glob.glob(os.path.join(save_recording_path, "*.[wW][eE][bB][mM]"))
+                    
+                    # Sort recordings by creation time (oldest first)
+                    recordings.sort(key=os.path.getctime)
+                    
+                    # Add numbering to the recordings
+                    numbered_recordings = []
+                    for idx, recording in enumerate(recordings, start=1):
+                        filename = os.path.basename(recording)
+                        numbered_recordings.append((recording, f"{idx}. {filename}"))
+                    
+                    return numbered_recordings
+
+                recordings_gallery = gr.Gallery(
+                    label="Recordings",
+                    value=list_recordings("./tmp/record_videos"),
+                    columns=3,
+                    height="auto",
+                    object_fit="contain"
+                )
+
+                refresh_button = gr.Button("🔄 Refresh Recordings", variant="secondary")
+                refresh_button.click(
+                    fn=list_recordings,
+                    inputs=save_recording_path,
+                    outputs=recordings_gallery
+                )
+
+        # Attach the callback to the LLM provider dropdown
+        llm_provider.change(
+            lambda provider, api_key, base_url: update_model_dropdown(provider, api_key, base_url),
+            inputs=[llm_provider, llm_api_key, llm_base_url],
+            outputs=llm_model_name
+        )  
+
+        # Add this after defining the components
+        enable_recording.change(
+            lambda enabled: gr.update(interactive=enabled),
+            inputs=enable_recording,
+            outputs=save_recording_path
+        )
+          
+        # Run button click handler
+        run_button.click(
+            fn=run_browser_agent,
+            inputs=[
+                agent_type, llm_provider, llm_model_name, llm_temperature, llm_base_url, llm_api_key,
+                use_own_browser, headless, disable_security, window_w, window_h, save_recording_path,
+                enable_recording, task, add_infos, max_steps, use_vision, max_actions_per_step, tool_call_in_content
+            ],
+            outputs=[final_result_output, errors_output, model_actions_output, model_thoughts_output, recording_display],
+        )
+
+    return demo
+
+def main():
+    parser = argparse.ArgumentParser(description="Gradio UI for Browser Agent")
+    parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP address to bind to")
+    parser.add_argument("--port", type=int, default=7788, help="Port to listen on")
+    parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Theme to use for the UI")
+    parser.add_argument("--dark-mode", action="store_true", help="Enable dark mode")
+    args = parser.parse_args()
+
+    demo = create_ui(theme_name=args.theme)
+    demo.launch(server_name=args.ip, server_port=args.port)
+
+if __name__ == '__main__':
+    main()
+
+
+================================================
+File: /.env.example
+================================================
+OPENAI_ENDPOINT=https://api.openai.com/v1
+OPENAI_API_KEY=
+
+ANTHROPIC_API_KEY=
+
+GOOGLE_API_KEY=
+
+AZURE_OPENAI_ENDPOINT=
+AZURE_OPENAI_API_KEY=
+
+DEEPSEEK_ENDPOINT=https://api.deepseek.com
+DEEPSEEK_API_KEY=
+
+# Set to false to disable anonymized telemetry
+ANONYMIZED_TELEMETRY=true
+
+# LogLevel: Set to debug to enable verbose logging, set to result to get results only. Available: result | debug | info
+BROWSER_USE_LOGGING_LEVEL=info
+
+CHROME_PATH=
+CHROME_USER_DATA=
+
+================================================
+File: /src/__init__.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: __init__.py.py
+
+
+================================================
+File: /src/agent/__init__.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: __init__.py.py
+
+
+================================================
+File: /src/agent/custom_agent.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: custom_agent.py
+
+import json
+import logging
+import pdb
+import traceback
+from typing import Optional, Type
+
+from browser_use.agent.prompts import SystemPrompt
+from browser_use.agent.service import Agent
+from browser_use.agent.views import (
+    ActionResult,
+    AgentHistoryList,
+    AgentOutput,
+)
+from browser_use.browser.browser import Browser
+from browser_use.browser.context import BrowserContext
+from browser_use.controller.service import Controller
+from browser_use.telemetry.views import (
+    AgentEndTelemetryEvent,
+    AgentRunTelemetryEvent,
+    AgentStepErrorTelemetryEvent,
+)
+from browser_use.utils import time_execution_async
+from langchain_core.language_models.chat_models import BaseChatModel
+from langchain_core.messages import (
+    BaseMessage,
+)
+
+from .custom_massage_manager import CustomMassageManager
+from .custom_views import CustomAgentOutput, CustomAgentStepInfo
+
+logger = logging.getLogger(__name__)
+
+
+class CustomAgent(Agent):
+    def __init__(
+            self,
+            task: str,
+            llm: BaseChatModel,
+            add_infos: str = "",
+            browser: Browser | None = None,
+            browser_context: BrowserContext | None = None,
+            controller: Controller = Controller(),
+            use_vision: bool = True,
+            save_conversation_path: Optional[str] = None,
+            max_failures: int = 5,
+            retry_delay: int = 10,
+            system_prompt_class: Type[SystemPrompt] = SystemPrompt,
+            max_input_tokens: int = 128000,
+            validate_output: bool = False,
+            include_attributes: list[str] = [
+                "title",
+                "type",
+                "name",
+                "role",
+                "tabindex",
+                "aria-label",
+                "placeholder",
+                "value",
+                "alt",
+                "aria-expanded",
+            ],
+            max_error_length: int = 400,
+            max_actions_per_step: int = 10,
+            tool_call_in_content: bool = True,
+    ):
+        super().__init__(
+            task=task,
+            llm=llm,
+            browser=browser,
+            browser_context=browser_context,
+            controller=controller,
+            use_vision=use_vision,
+            save_conversation_path=save_conversation_path,
+            max_failures=max_failures,
+            retry_delay=retry_delay,
+            system_prompt_class=system_prompt_class,
+            max_input_tokens=max_input_tokens,
+            validate_output=validate_output,
+            include_attributes=include_attributes,
+            max_error_length=max_error_length,
+            max_actions_per_step=max_actions_per_step,
+            tool_call_in_content=tool_call_in_content,
+        )
+        self.add_infos = add_infos
+        self.message_manager = CustomMassageManager(
+            llm=self.llm,
+            task=self.task,
+            action_descriptions=self.controller.registry.get_prompt_description(),
+            system_prompt_class=self.system_prompt_class,
+            max_input_tokens=self.max_input_tokens,
+            include_attributes=self.include_attributes,
+            max_error_length=self.max_error_length,
+            max_actions_per_step=self.max_actions_per_step,
+            tool_call_in_content=tool_call_in_content,
+        )
+
+    def _setup_action_models(self) -> None:
+        """Setup dynamic action models from controller's registry"""
+        # Get the dynamic action model from controller's registry
+        self.ActionModel = self.controller.registry.create_action_model()
+        # Create output model with the dynamic actions
+        self.AgentOutput = CustomAgentOutput.type_with_custom_actions(self.ActionModel)
+
+    def _log_response(self, response: CustomAgentOutput) -> None:
+        """Log the model's response"""
+        if "Success" in response.current_state.prev_action_evaluation:
+            emoji = "✅"
+        elif "Failed" in response.current_state.prev_action_evaluation:
+            emoji = "❌"
+        else:
+            emoji = "🤷"
+
+        logger.info(f"{emoji} Eval: {response.current_state.prev_action_evaluation}")
+        logger.info(f"🧠 New Memory: {response.current_state.important_contents}")
+        logger.info(f"⏳ Task Progress: {response.current_state.completed_contents}")
+        logger.info(f"🤔 Thought: {response.current_state.thought}")
+        logger.info(f"🎯 Summary: {response.current_state.summary}")
+        for i, action in enumerate(response.action):
+            logger.info(
+                f"🛠️  Action {i + 1}/{len(response.action)}: {action.model_dump_json(exclude_unset=True)}"
+            )
+
+    def update_step_info(
+            self, model_output: CustomAgentOutput, step_info: CustomAgentStepInfo = None
+    ):
+        """
+        update step info
+        """
+        if step_info is None:
+            return
+
+        step_info.step_number += 1
+        important_contents = model_output.current_state.important_contents
+        if (
+                important_contents
+                and "None" not in important_contents
+                and important_contents not in step_info.memory
+        ):
+            step_info.memory += important_contents + "\n"
+
+        completed_contents = model_output.current_state.completed_contents
+        if completed_contents and "None" not in completed_contents:
+            step_info.task_progress = completed_contents
+
+    @time_execution_async("--get_next_action")
+    async def get_next_action(self, input_messages: list[BaseMessage]) -> AgentOutput:
+        """Get next action from LLM based on current state"""
+        try:
+            structured_llm = self.llm.with_structured_output(self.AgentOutput, include_raw=True)
+            response: dict[str, Any] = await structured_llm.ainvoke(input_messages)  # type: ignore
+
+            parsed: AgentOutput = response['parsed']
+            # cut the number of actions to max_actions_per_step
+            parsed.action = parsed.action[: self.max_actions_per_step]
+            self._log_response(parsed)
+            self.n_steps += 1
+
+            return parsed
+        except Exception as e:
+            # If something goes wrong, try to invoke the LLM again without structured output,
+            # and Manually parse the response. Temporarily solution for DeepSeek
+            ret = self.llm.invoke(input_messages)
+            if isinstance(ret.content, list):
+                parsed_json = json.loads(ret.content[0].replace("```json", "").replace("```", ""))
+            else:
+                parsed_json = json.loads(ret.content.replace("```json", "").replace("```", ""))
+            parsed: AgentOutput = self.AgentOutput(**parsed_json)
+            if parsed is None:
+                raise ValueError(f'Could not parse response.')
+
+            # cut the number of actions to max_actions_per_step
+            parsed.action = parsed.action[: self.max_actions_per_step]
+            self._log_response(parsed)
+            self.n_steps += 1
+
+            return parsed
+
+    @time_execution_async("--step")
+    async def step(self, step_info: Optional[CustomAgentStepInfo] = None) -> None:
+        """Execute one step of the task"""
+        logger.info(f"\n📍 Step {self.n_steps}")
+        state = None
+        model_output = None
+        result: list[ActionResult] = []
+
+        try:
+            state = await self.browser_context.get_state(use_vision=self.use_vision)
+            self.message_manager.add_state_message(state, self._last_result, step_info)
+            input_messages = self.message_manager.get_messages()
+            model_output = await self.get_next_action(input_messages)
+            self.update_step_info(model_output, step_info)
+            logger.info(f"🧠 All Memory: {step_info.memory}")
+            self._save_conversation(input_messages, model_output)
+            self.message_manager._remove_last_state_message()  # we dont want the whole state in the chat history
+            self.message_manager.add_model_output(model_output)
+
+            result: list[ActionResult] = await self.controller.multi_act(
+                model_output.action, self.browser_context
+            )
+            self._last_result = result
+
+            if len(result) > 0 and result[-1].is_done:
+                logger.info(f"📄 Result: {result[-1].extracted_content}")
+
+            self.consecutive_failures = 0
+
+        except Exception as e:
+            result = self._handle_step_error(e)
+            self._last_result = result
+
+        finally:
+            if not result:
+                return
+            for r in result:
+                if r.error:
+                    self.telemetry.capture(
+                        AgentStepErrorTelemetryEvent(
+                            agent_id=self.agent_id,
+                            error=r.error,
+                        )
+                    )
+            if state:
+                self._make_history_item(model_output, state, result)
+
+    async def run(self, max_steps: int = 100) -> AgentHistoryList:
+        """Execute the task with maximum number of steps"""
+        try:
+            logger.info(f"🚀 Starting task: {self.task}")
+
+            self.telemetry.capture(
+                AgentRunTelemetryEvent(
+                    agent_id=self.agent_id,
+                    task=self.task,
+                )
+            )
+
+            step_info = CustomAgentStepInfo(
+                task=self.task,
+                add_infos=self.add_infos,
+                step_number=1,
+                max_steps=max_steps,
+                memory="",
+                task_progress="",
+            )
+
+            for step in range(max_steps):
+                if self._too_many_failures():
+                    break
+
+                await self.step(step_info)
+
+                if self.history.is_done():
+                    if (
+                            self.validate_output and step < max_steps - 1
+                    ):  # if last step, we dont need to validate
+                        if not await self._validate_output():
+                            continue
+
+                    logger.info("✅ Task completed successfully")
+                    break
+            else:
+                logger.info("❌ Failed to complete task in maximum steps")
+
+            return self.history
+
+        finally:
+            self.telemetry.capture(
+                AgentEndTelemetryEvent(
+                    agent_id=self.agent_id,
+                    task=self.task,
+                    success=self.history.is_done(),
+                    steps=len(self.history.history),
+                )
+            )
+            if not self.injected_browser_context:
+                await self.browser_context.close()
+
+            if not self.injected_browser and self.browser:
+                await self.browser.close()
+
+
+================================================
+File: /src/agent/custom_massage_manager.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: custom_massage_manager.py
+
+from __future__ import annotations
+
+import logging
+from typing import List, Optional, Type
+
+from browser_use.agent.message_manager.service import MessageManager
+from browser_use.agent.message_manager.views import MessageHistory
+from browser_use.agent.prompts import SystemPrompt
+from browser_use.agent.views import ActionResult, AgentStepInfo
+from browser_use.browser.views import BrowserState
+from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import (
+    HumanMessage,
+    AIMessage
+)
+
+from .custom_prompts import CustomAgentMessagePrompt
+
+logger = logging.getLogger(__name__)
+
+
+class CustomMassageManager(MessageManager):
+    def __init__(
+            self,
+            llm: BaseChatModel,
+            task: str,
+            action_descriptions: str,
+            system_prompt_class: Type[SystemPrompt],
+            max_input_tokens: int = 128000,
+            estimated_tokens_per_character: int = 3,
+            image_tokens: int = 800,
+            include_attributes: list[str] = [],
+            max_error_length: int = 400,
+            max_actions_per_step: int = 10,
+            tool_call_in_content: bool = False,
+    ):
+        super().__init__(
+            llm=llm,
+            task=task,
+            action_descriptions=action_descriptions,
+            system_prompt_class=system_prompt_class,
+            max_input_tokens=max_input_tokens,
+            estimated_tokens_per_character=estimated_tokens_per_character,
+            image_tokens=image_tokens,
+            include_attributes=include_attributes,
+            max_error_length=max_error_length,
+            max_actions_per_step=max_actions_per_step,
+            tool_call_in_content=tool_call_in_content,
+        )
+
+        # Custom: Move Task info to state_message
+        self.history = MessageHistory()
+        self._add_message_with_tokens(self.system_prompt)
+        tool_calls = [
+            {
+                'name': 'AgentOutput',
+                'args': {
+                    'current_state': {
+                        'evaluation_previous_goal': 'Unknown - No previous actions to evaluate.',
+                        'memory': '',
+                        'next_goal': 'Obtain task from user',
+                    },
+                    'action': [],
+                },
+                'id': '',
+                'type': 'tool_call',
+            }
+        ]
+        if self.tool_call_in_content:
+            # openai throws error if tool_calls are not responded -> move to content
+            example_tool_call = AIMessage(
+                content=f'{tool_calls}',
+                tool_calls=[],
+            )
+        else:
+            example_tool_call = AIMessage(
+                content=f'',
+                tool_calls=tool_calls,
+            )
+
+        self._add_message_with_tokens(example_tool_call)
+
+    def add_state_message(
+            self,
+            state: BrowserState,
+            result: Optional[List[ActionResult]] = None,
+            step_info: Optional[AgentStepInfo] = None,
+    ) -> None:
+        """Add browser state as human message"""
+
+        # if keep in memory, add to directly to history and add state without result
+        if result:
+            for r in result:
+                if r.include_in_memory:
+                    if r.extracted_content:
+                        msg = HumanMessage(content=str(r.extracted_content))
+                        self._add_message_with_tokens(msg)
+                    if r.error:
+                        msg = HumanMessage(
+                            content=str(r.error)[-self.max_error_length:]
+                        )
+                        self._add_message_with_tokens(msg)
+                    result = None  # if result in history, we dont want to add it again
+
+        # otherwise add state message and result to next message (which will not stay in memory)
+        state_message = CustomAgentMessagePrompt(
+            state,
+            result,
+            include_attributes=self.include_attributes,
+            max_error_length=self.max_error_length,
+            step_info=step_info,
+        ).get_user_message()
+        self._add_message_with_tokens(state_message)
+
+
+================================================
+File: /src/agent/custom_prompts.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: custom_prompts.py
+
+from typing import List, Optional
+
+from browser_use.agent.prompts import SystemPrompt
+from browser_use.agent.views import ActionResult
+from browser_use.browser.views import BrowserState
+from langchain_core.messages import HumanMessage, SystemMessage
+
+from .custom_views import CustomAgentStepInfo
+
+
+class CustomSystemPrompt(SystemPrompt):
+    def important_rules(self) -> str:
+        """
+        Returns the important rules for the agent.
+        """
+        text = """
+    1. RESPONSE FORMAT: You must ALWAYS respond with valid JSON in this exact format:
+       {
+         "current_state": {
+           "prev_action_evaluation": "Success|Failed|Unknown - Analyze the current elements and the image to check if the previous goals/actions are successful like intended by the task. Ignore the action result. The website is the ground truth. Also mention if something unexpected happened like new suggestions in an input field. Shortly state why/why not. Note that the result you output must be consistent with the reasoning you output afterwards. If you consider it to be 'Failed,' you should reflect on this during your thought.",
+           "important_contents": "Output important contents closely related to user\'s instruction or task on the current page. If there is, please output the contents. If not, please output empty string ''.",
+           "completed_contents": "Update the input Task Progress. Completed contents is a general summary of the current contents that have been completed. Just summarize the contents that have been actually completed based on the current page and the history operations. Please list each completed item individually, such as: 1. Input username. 2. Input Password. 3. Click confirm button",
+           "thought": "Think about the requirements that have been completed in previous operations and the requirements that need to be completed in the next one operation. If the output of prev_action_evaluation is 'Failed', please reflect and output your reflection here. If you think you have entered the wrong page, consider to go back to the previous page in next action.",
+           "summary": "Please generate a brief natural language description for the operation in next actions based on your Thought."
+         },
+         "action": [
+           {
+             "action_name": {
+               // action-specific parameters
+             }
+           },
+           // ... more actions in sequence
+         ]
+       }
+
+    2. ACTIONS: You can specify multiple actions to be executed in sequence. 
+
+       Common action sequences:
+       - Form filling: [
+           {"input_text": {"index": 1, "text": "username"}},
+           {"input_text": {"index": 2, "text": "password"}},
+           {"click_element": {"index": 3}}
+         ]
+       - Navigation and extraction: [
+           {"open_new_tab": {}},
+           {"go_to_url": {"url": "https://example.com"}},
+           {"extract_page_content": {}}
+         ]
+
+
+    3. ELEMENT INTERACTION:
+       - Only use indexes that exist in the provided element list
+       - Each element has a unique index number (e.g., "33[:]<button>")
+       - Elements marked with "_[:]" are non-interactive (for context only)
+
+    4. NAVIGATION & ERROR HANDLING:
+       - If no suitable elements exist, use other functions to complete the task
+       - If stuck, try alternative approaches
+       - Handle popups/cookies by accepting or closing them
+       - Use scroll to find elements you are looking for
+
+    5. TASK COMPLETION:
+       - If you think all the requirements of user\'s instruction have been completed and no further operation is required, output the done action to terminate the operation process.
+       - Don't hallucinate actions.
+       - If the task requires specific information - make sure to include everything in the done function. This is what the user will see.
+       - If you are running out of steps (current step), think about speeding it up, and ALWAYS use the done action as the last action.
+
+    6. VISUAL CONTEXT:
+       - When an image is provided, use it to understand the page layout
+       - Bounding boxes with labels correspond to element indexes
+       - Each bounding box and its label have the same color
+       - Most often the label is inside the bounding box, on the top right
+       - Visual context helps verify element locations and relationships
+       - sometimes labels overlap, so use the context to verify the correct element
+
+    7. Form filling:
+       - If you fill an input field and your action sequence is interrupted, most often a list with suggestions poped up under the field and you need to first select the right element from the suggestion list.
+
+    8. ACTION SEQUENCING:
+       - Actions are executed in the order they appear in the list 
+       - Each action should logically follow from the previous one
+       - If the page changes after an action, the sequence is interrupted and you get the new state.
+       - If content only disappears the sequence continues.
+       - Only provide the action sequence until you think the page will change.
+       - Try to be efficient, e.g. fill forms at once, or chain actions where nothing changes on the page like saving, extracting, checkboxes...
+       - only use multiple actions if it makes sense. 
+    """
+        text += f"   - use maximum {self.max_actions_per_step} actions per sequence"
+        return text
+
+    def input_format(self) -> str:
+        return """
+    INPUT STRUCTURE:
+    1. Task: The user\'s instructions you need to complete.
+    2. Hints(Optional): Some hints to help you complete the user\'s instructions.
+    3. Memory: Important contents are recorded during historical operations for use in subsequent operations.
+    4. Task Progress: Up to the current page, the content you have completed can be understood as the progress of the task.
+    5. Current URL: The webpage you're currently on
+    6. Available Tabs: List of open browser tabs
+    7. Interactive Elements: List in the format:
+       index[:]<element_type>element_text</element_type>
+       - index: Numeric identifier for interaction
+       - element_type: HTML element type (button, input, etc.)
+       - element_text: Visible text or element description
+
+    Example:
+    33[:]<button>Submit Form</button>
+    _[:] Non-interactive text
+
+
+    Notes:
+    - Only elements with numeric indexes are interactive
+    - _[:] elements provide context but cannot be interacted with
+    """
+
+    def get_system_message(self) -> SystemMessage:
+        """
+        Get the system prompt for the agent.
+
+        Returns:
+            str: Formatted system prompt
+        """
+        time_str = self.current_date.strftime("%Y-%m-%d %H:%M")
+
+        AGENT_PROMPT = f"""You are a precise browser automation agent that interacts with websites through structured commands. Your role is to:
+    1. Analyze the provided webpage elements and structure
+    2. Plan a sequence of actions to accomplish the given task
+    3. Respond with valid JSON containing your action sequence and state assessment
+
+    Current date and time: {time_str}
+
+    {self.input_format()}
+
+    {self.important_rules()}
+
+    Functions:
+    {self.default_action_description}
+
+    Remember: Your responses must be valid JSON matching the specified format. Each action in the sequence must be valid."""
+        return SystemMessage(content=AGENT_PROMPT)
+
+
+class CustomAgentMessagePrompt:
+    def __init__(
+            self,
+            state: BrowserState,
+            result: Optional[List[ActionResult]] = None,
+            include_attributes: list[str] = [],
+            max_error_length: int = 400,
+            step_info: Optional[CustomAgentStepInfo] = None,
+    ):
+        self.state = state
+        self.result = result
+        self.max_error_length = max_error_length
+        self.include_attributes = include_attributes
+        self.step_info = step_info
+
+    def get_user_message(self) -> HumanMessage:
+        state_description = f"""
+    1. Task: {self.step_info.task}
+    2. Hints(Optional): 
+    {self.step_info.add_infos}
+    3. Memory: 
+    {self.step_info.memory}
+    4. Task Progress: 
+    {self.step_info.task_progress}
+    5. Current url: {self.state.url}
+    6. Available tabs:
+    {self.state.tabs}
+    7. Interactive elements:
+    {self.state.element_tree.clickable_elements_to_string(include_attributes=self.include_attributes)}
+            """
+
+        if self.result:
+            for i, result in enumerate(self.result):
+                if result.extracted_content:
+                    state_description += f"\nResult of action {i + 1}/{len(self.result)}: {result.extracted_content}"
+                if result.error:
+                    # only use last 300 characters of error
+                    error = result.error[-self.max_error_length:]
+                    state_description += (
+                        f"\nError of action {i + 1}/{len(self.result)}: ...{error}"
+                    )
+
+        if self.state.screenshot:
+            # Format message for vision model
+            return HumanMessage(
+                content=[
+                    {"type": "text", "text": state_description},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/png;base64,{self.state.screenshot}"
+                        },
+                    },
+                ]
+            )
+
+        return HumanMessage(content=state_description)
+
+
+================================================
+File: /src/agent/custom_views.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: custom_views.py
+
+from dataclasses import dataclass
+from typing import Type
+
+from browser_use.agent.views import AgentOutput
+from browser_use.controller.registry.views import ActionModel
+from pydantic import BaseModel, ConfigDict, Field, create_model
+
+
+@dataclass
+class CustomAgentStepInfo:
+    step_number: int
+    max_steps: int
+    task: str
+    add_infos: str
+    memory: str
+    task_progress: str
+
+
+class CustomAgentBrain(BaseModel):
+    """Current state of the agent"""
+
+    prev_action_evaluation: str
+    important_contents: str
+    completed_contents: str
+    thought: str
+    summary: str
+
+
+class CustomAgentOutput(AgentOutput):
+    """Output model for agent
+
+    @dev note: this model is extended with custom actions in AgentService. You can also use some fields that are not in this model as provided by the linter, as long as they are registered in the DynamicActions model.
+    """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    current_state: CustomAgentBrain
+    action: list[ActionModel]
+
+    @staticmethod
+    def type_with_custom_actions(
+        custom_actions: Type[ActionModel],
+    ) -> Type["CustomAgentOutput"]:
+        """Extend actions with custom actions"""
+        return create_model(
+            "AgentOutput",
+            __base__=CustomAgentOutput,
+            action=(
+                list[custom_actions],
+                Field(...),
+            ),  # Properly annotated field with no default
+            __module__=CustomAgentOutput.__module__,
+        )
+
+
+================================================
+File: /src/browser/__init__.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: __init__.py.py
+
+
+================================================
+File: /src/browser/custom_browser.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: browser.py
+
+from browser_use.browser.browser import Browser
+from browser_use.browser.context import BrowserContext, BrowserContextConfig
+
+from .custom_context import CustomBrowserContext
+
+
+class CustomBrowser(Browser):
+    async def new_context(
+        self,
+        config: BrowserContextConfig = BrowserContextConfig(),
+        context: CustomBrowserContext = None,
+    ) -> BrowserContext:
+        """Create a browser context"""
+        return CustomBrowserContext(config=config, browser=self, context=context)
+
+
+================================================
+File: /src/browser/custom_context.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: context.py
+
+import json
+import logging
+import os
+
+from browser_use.browser.browser import Browser
+from browser_use.browser.context import BrowserContext, BrowserContextConfig
+from playwright.async_api import Browser as PlaywrightBrowser
+
+logger = logging.getLogger(__name__)
+
+
+class CustomBrowserContext(BrowserContext):
+    def __init__(
+        self,
+        browser: "Browser",
+        config: BrowserContextConfig = BrowserContextConfig(),
+        context: BrowserContext = None,
+    ):
+        super(CustomBrowserContext, self).__init__(browser=browser, config=config)
+        self.context = context
+
+    async def _create_context(self, browser: PlaywrightBrowser):
+        """Creates a new browser context with anti-detection measures and loads cookies if available."""
+        # If we have a context, return it directly
+        if self.context:
+            return self.context
+        if self.browser.config.chrome_instance_path and len(browser.contexts) > 0:
+            # Connect to existing Chrome instance instead of creating new one
+            context = browser.contexts[0]
+        else:
+            # Original code for creating new context
+            context = await browser.new_context(
+                viewport=self.config.browser_window_size,
+                no_viewport=False,
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"
+                ),
+                java_script_enabled=True,
+                bypass_csp=self.config.disable_security,
+                ignore_https_errors=self.config.disable_security,
+                record_video_dir=self.config.save_recording_path,
+                record_video_size=self.config.browser_window_size,  # set record video size, same as windows size
+            )
+
+        if self.config.trace_path:
+            await context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
+        # Load cookies if they exist
+        if self.config.cookies_file and os.path.exists(self.config.cookies_file):
+            with open(self.config.cookies_file, "r") as f:
+                cookies = json.load(f)
+                logger.info(
+                    f"Loaded {len(cookies)} cookies from {self.config.cookies_file}"
+                )
+                await context.add_cookies(cookies)
+
+        # Expose anti-detection scripts
+        await context.add_init_script(
+            """
+            // Webdriver property
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+
+            // Languages
+            Object.defineProperty(navigator, 'languages', {
+                get: () => ['en-US', 'en']
+            });
+
+            // Plugins
+            Object.defineProperty(navigator, 'plugins', {
+                get: () => [1, 2, 3, 4, 5]
+            });
+
+            // Chrome runtime
+            window.chrome = { runtime: {} };
+
+            // Permissions
+            const originalQuery = window.navigator.permissions.query;
+            window.navigator.permissions.query = (parameters) => (
+                parameters.name === 'notifications' ?
+                    Promise.resolve({ state: Notification.permission }) :
+                    originalQuery(parameters)
+            );
+            """
+        )
+
+        return context
+
+
+================================================
+File: /src/controller/__init__.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: __init__.py.py
+
+
+================================================
+File: /src/controller/custom_controller.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: custom_action.py
+
+import pyperclip
+from browser_use.agent.views import ActionResult
+from browser_use.browser.context import BrowserContext
+from browser_use.controller.service import Controller
+
+
+class CustomController(Controller):
+    def __init__(self):
+        super().__init__()
+        self._register_custom_actions()
+
+    def _register_custom_actions(self):
+        """Register all custom browser actions"""
+
+        @self.registry.action("Copy text to clipboard")
+        def copy_to_clipboard(text: str):
+            pyperclip.copy(text)
+            return ActionResult(extracted_content=text)
+
+        @self.registry.action("Paste text from clipboard", requires_browser=True)
+        async def paste_from_clipboard(browser: BrowserContext):
+            text = pyperclip.paste()
+            # send text to browser
+            page = await browser.get_current_page()
+            await page.keyboard.type(text)
+
+            return ActionResult(extracted_content=text)
+
+
+================================================
+File: /src/utils/__init__.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: __init__.py.py
+
+
+================================================
+File: /src/utils/utils.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: utils.py
+
+import base64
+import os
+
+from langchain_anthropic import ChatAnthropic
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
+from langchain_openai import AzureChatOpenAI, ChatOpenAI
+import gradio as gr
+
+def get_llm_model(provider: str, **kwargs):
+    """
+    获取LLM 模型
+    :param provider: 模型类型
+    :param kwargs:
+    :return:
+    """
+    if provider == "anthropic":
+        if not kwargs.get("base_url", ""):
+            base_url = "https://api.anthropic.com"
+        else:
+            base_url = kwargs.get("base_url")
+
+        if not kwargs.get("api_key", ""):
+            api_key = os.getenv("ANTHROPIC_API_KEY", "")
+        else:
+            api_key = kwargs.get("api_key")
+
+        return ChatAnthropic(
+            model_name=kwargs.get("model_name", "claude-3-5-sonnet-20240620"),
+            temperature=kwargs.get("temperature", 0.0),
+            base_url=base_url,
+            api_key=api_key,
+        )
+    elif provider == "openai":
+        if not kwargs.get("base_url", ""):
+            base_url = os.getenv("OPENAI_ENDPOINT", "https://api.openai.com/v1")
+        else:
+            base_url = kwargs.get("base_url")
+
+        if not kwargs.get("api_key", ""):
+            api_key = os.getenv("OPENAI_API_KEY", "")
+        else:
+            api_key = kwargs.get("api_key")
+
+        return ChatOpenAI(
+            model=kwargs.get("model_name", "gpt-4o"),
+            temperature=kwargs.get("temperature", 0.0),
+            base_url=base_url,
+            api_key=api_key,
+        )
+    elif provider == "deepseek":
+        if not kwargs.get("base_url", ""):
+            base_url = os.getenv("DEEPSEEK_ENDPOINT", "")
+        else:
+            base_url = kwargs.get("base_url")
+
+        if not kwargs.get("api_key", ""):
+            api_key = os.getenv("DEEPSEEK_API_KEY", "")
+        else:
+            api_key = kwargs.get("api_key")
+
+        return ChatOpenAI(
+            model=kwargs.get("model_name", "deepseek-chat"),
+            temperature=kwargs.get("temperature", 0.0),
+            base_url=base_url,
+            api_key=api_key,
+        )
+    elif provider == "gemini":
+        if not kwargs.get("api_key", ""):
+            api_key = os.getenv("GOOGLE_API_KEY", "")
+        else:
+            api_key = kwargs.get("api_key")
+        return ChatGoogleGenerativeAI(
+            model=kwargs.get("model_name", "gemini-2.0-flash-exp"),
+            temperature=kwargs.get("temperature", 0.0),
+            google_api_key=api_key,
+        )
+    elif provider == "ollama":
+        return ChatOllama(
+            model=kwargs.get("model_name", "qwen2.5:7b"),
+            temperature=kwargs.get("temperature", 0.0),
+            num_ctx=128000,
+        )
+    elif provider == "azure_openai":
+        if not kwargs.get("base_url", ""):
+            base_url = os.getenv("AZURE_OPENAI_ENDPOINT", "")
+        else:
+            base_url = kwargs.get("base_url")
+        if not kwargs.get("api_key", ""):
+            api_key = os.getenv("AZURE_OPENAI_API_KEY", "")
+        else:
+            api_key = kwargs.get("api_key")
+        return AzureChatOpenAI(
+            model=kwargs.get("model_name", "gpt-4o"),
+            temperature=kwargs.get("temperature", 0.0),
+            api_version="2024-05-01-preview",
+            azure_endpoint=base_url,
+            api_key=api_key,
+        )
+    else:
+        raise ValueError(f"Unsupported provider: {provider}")
+    
+# Predefined model names for common providers
+model_names = {
+    "anthropic": ["claude-3-5-sonnet-20240620", "claude-3-opus-20240229"],
+    "openai": ["gpt-4o", "gpt-4", "gpt-3.5-turbo"],
+    "deepseek": ["deepseek-chat"],
+    "gemini": ["gemini-2.0-flash-exp", "gemini-2.0-flash-thinking-exp", "gemini-1.5-flash-latest", "gemini-1.5-flash-8b-latest", "gemini-2.0-flash-thinking-exp-1219" ],
+    "ollama": ["qwen2.5:7b", "llama2:7b"],
+    "azure_openai": ["gpt-4o", "gpt-4", "gpt-3.5-turbo"]
+}
+
+# Callback to update the model name dropdown based on the selected provider
+def update_model_dropdown(llm_provider, api_key=None, base_url=None):
+    """
+    Update the model name dropdown with predefined models for the selected provider.
+    """
+    # Use API keys from .env if not provided
+    if not api_key:
+        api_key = os.getenv(f"{llm_provider.upper()}_API_KEY", "")
+    if not base_url:
+        base_url = os.getenv(f"{llm_provider.upper()}_BASE_URL", "")
+
+    # Use predefined models for the selected provider
+    if llm_provider in model_names:
+        return gr.Dropdown(choices=model_names[llm_provider], value=model_names[llm_provider][0], interactive=True)
+    else:
+        return gr.Dropdown(choices=[], value="", interactive=True, allow_custom_value=True)
+        
+def encode_image(img_path):
+    if not img_path:
+        return None
+    with open(img_path, "rb") as fin:
+        image_data = base64.b64encode(fin.read()).decode("utf-8")
+    return image_data
+
+
+================================================
+File: /tests/test_browser_use.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @ProjectName: browser-use-webui
+# @FileName: test_browser_use.py
+
+from dotenv import load_dotenv
+
+load_dotenv()
+import sys
+
+sys.path.append(".")
+import asyncio
+import os
+import sys
+from pprint import pprint
+
+from browser_use import Agent
+from browser_use.agent.views import AgentHistoryList
+
+from src.utils import utils
+
+
+async def test_browser_use_org():
+    from browser_use.browser.browser import Browser, BrowserConfig
+    from browser_use.browser.context import (
+        BrowserContextConfig,
+        BrowserContextWindowSize,
+    )
+
+    llm = utils.get_llm_model(
+        provider="azure_openai",
+        model_name="gpt-4o",
+        temperature=0.8,
+        base_url=os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+        api_key=os.getenv("AZURE_OPENAI_API_KEY", ""),
+    )
+
+    window_w, window_h = 1920, 1080
+
+    browser = Browser(
+        config=BrowserConfig(
+            headless=False,
+            disable_security=True,
+            extra_chromium_args=[f"--window-size={window_w},{window_h}"],
+        )
+    )
+    async with await browser.new_context(
+        config=BrowserContextConfig(
+            trace_path="./tmp/traces",
+            save_recording_path="./tmp/record_videos",
+            no_viewport=False,
+            browser_window_size=BrowserContextWindowSize(
+                width=window_w, height=window_h
+            ),
+        )
+    ) as browser_context:
+        agent = Agent(
+            task="go to google.com and type 'OpenAI' click search and give me the first url",
+            llm=llm,
+            browser_context=browser_context,
+        )
+        history: AgentHistoryList = await agent.run(max_steps=10)
+
+        print("Final Result:")
+        pprint(history.final_result(), indent=4)
+
+        print("\nErrors:")
+        pprint(history.errors(), indent=4)
+
+        # e.g. xPaths the model clicked on
+        print("\nModel Outputs:")
+        pprint(history.model_actions(), indent=4)
+
+        print("\nThoughts:")
+        pprint(history.model_thoughts(), indent=4)
+    # close browser
+    await browser.close()
+
+
+async def test_browser_use_custom():
+    from browser_use.browser.context import BrowserContextWindowSize
+    from browser_use.browser.browser import BrowserConfig
+    from playwright.async_api import async_playwright
+
+    from src.agent.custom_agent import CustomAgent
+    from src.agent.custom_prompts import CustomSystemPrompt
+    from src.browser.custom_browser import CustomBrowser
+    from src.browser.custom_context import BrowserContextConfig
+    from src.controller.custom_controller import CustomController
+
+    window_w, window_h = 1920, 1080
+
+    # llm = utils.get_llm_model(
+    #     provider="azure_openai",
+    #     model_name="gpt-4o",
+    #     temperature=0.8,
+    #     base_url=os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+    #     api_key=os.getenv("AZURE_OPENAI_API_KEY", ""),
+    # )
+
+    llm = utils.get_llm_model(
+        provider="gemini",
+        model_name="gemini-2.0-flash-exp",
+        temperature=1.0,
+        api_key=os.getenv("GOOGLE_API_KEY", "")
+    )
+
+    # llm = utils.get_llm_model(
+    #     provider="deepseek",
+    #     model_name="deepseek-chat",
+    #     temperature=0.8
+    # )
+
+    # llm = utils.get_llm_model(
+    #     provider="ollama", model_name="qwen2.5:7b", temperature=0.8
+    # )
+
+    controller = CustomController()
+    use_own_browser = False
+    disable_security = True
+    use_vision = True  # Set to False when using DeepSeek
+    tool_call_in_content = True  # Set to True when using Ollama
+    max_actions_per_step = 1
+    playwright = None
+    browser_context_ = None
+    try:
+        if use_own_browser:
+            playwright = await async_playwright().start()
+            chrome_exe = os.getenv("CHROME_PATH", "")
+            chrome_use_data = os.getenv("CHROME_USER_DATA", "")
+            browser_context_ = await playwright.chromium.launch_persistent_context(
+                user_data_dir=chrome_use_data,
+                executable_path=chrome_exe,
+                no_viewport=False,
+                headless=False,  # 保持浏览器窗口可见
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"
+                ),
+                java_script_enabled=True,
+                bypass_csp=disable_security,
+                ignore_https_errors=disable_security,
+                record_video_dir="./tmp/record_videos",
+                record_video_size={"width": window_w, "height": window_h},
+            )
+        else:
+            browser_context_ = None
+
+        browser = CustomBrowser(
+            config=BrowserConfig(
+                headless=False,
+                disable_security=True,
+                extra_chromium_args=[f"--window-size={window_w},{window_h}"],
+            )
+        )
+
+        async with await browser.new_context(
+            config=BrowserContextConfig(
+                trace_path="./tmp/result_processing",
+                save_recording_path="./tmp/record_videos",
+                no_viewport=False,
+                browser_window_size=BrowserContextWindowSize(
+                    width=window_w, height=window_h
+                ),
+            ),
+            context=browser_context_,
+        ) as browser_context:
+            agent = CustomAgent(
+                task="go to google.com and type 'OpenAI' click search and give me the first url",
+                add_infos="",  # some hints for llm to complete the task
+                llm=llm,
+                browser_context=browser_context,
+                controller=controller,
+                system_prompt_class=CustomSystemPrompt,
+                use_vision=use_vision,
+                tool_call_in_content=tool_call_in_content,
+                max_actions_per_step=max_actions_per_step
+            )
+            history: AgentHistoryList = await agent.run(max_steps=10)
+
+            print("Final Result:")
+            pprint(history.final_result(), indent=4)
+
+            print("\nErrors:")
+            pprint(history.errors(), indent=4)
+
+            # e.g. xPaths the model clicked on
+            print("\nModel Outputs:")
+            pprint(history.model_actions(), indent=4)
+
+            print("\nThoughts:")
+            pprint(history.model_thoughts(), indent=4)
+            # close browser
+    except Exception:
+        import traceback
+
+        traceback.print_exc()
+    finally:
+        # 显式关闭持久化上下文
+        if browser_context_:
+            await browser_context_.close()
+
+        # 关闭 Playwright 对象
+        if playwright:
+            await playwright.stop()
+
+        await browser.close()
+
+
+if __name__ == "__main__":
+    # asyncio.run(test_browser_use_org())
+    asyncio.run(test_browser_use_custom())
+
+
+================================================
+File: /tests/test_llm_api.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/1
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: test_llm_api.py
+import os
+import pdb
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import sys
+
+sys.path.append(".")
+
+
+def test_openai_model():
+    from langchain_core.messages import HumanMessage
+    from src.utils import utils
+
+    llm = utils.get_llm_model(
+        provider="openai",
+        model_name="gpt-4o",
+        temperature=0.8,
+        base_url=os.getenv("OPENAI_ENDPOINT", ""),
+        api_key=os.getenv("OPENAI_API_KEY", "")
+    )
+    image_path = "assets/examples/test.png"
+    image_data = utils.encode_image(image_path)
+    message = HumanMessage(
+        content=[
+            {"type": "text", "text": "describe this image"},
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},
+            },
+        ]
+    )
+    ai_msg = llm.invoke([message])
+    print(ai_msg.content)
+
+
+def test_gemini_model():
+    # you need to enable your api key first: https://ai.google.dev/palm_docs/oauth_quickstart
+    from langchain_core.messages import HumanMessage
+    from src.utils import utils
+
+    llm = utils.get_llm_model(
+        provider="gemini",
+        model_name="gemini-2.0-flash-exp",
+        temperature=0.8,
+        api_key=os.getenv("GOOGLE_API_KEY", "")
+    )
+
+    image_path = "assets/examples/test.png"
+    image_data = utils.encode_image(image_path)
+    message = HumanMessage(
+        content=[
+            {"type": "text", "text": "describe this image"},
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},
+            },
+        ]
+    )
+    ai_msg = llm.invoke([message])
+    print(ai_msg.content)
+
+
+def test_azure_openai_model():
+    from langchain_core.messages import HumanMessage
+    from src.utils import utils
+
+    llm = utils.get_llm_model(
+        provider="azure_openai",
+        model_name="gpt-4o",
+        temperature=0.8,
+        base_url=os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+        api_key=os.getenv("AZURE_OPENAI_API_KEY", "")
+    )
+    image_path = "assets/examples/test.png"
+    image_data = utils.encode_image(image_path)
+    message = HumanMessage(
+        content=[
+            {"type": "text", "text": "describe this image"},
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},
+            },
+        ]
+    )
+    ai_msg = llm.invoke([message])
+    print(ai_msg.content)
+
+
+def test_deepseek_model():
+    from langchain_core.messages import HumanMessage
+    from src.utils import utils
+
+    llm = utils.get_llm_model(
+        provider="deepseek",
+        model_name="deepseek-chat",
+        temperature=0.8,
+        base_url=os.getenv("DEEPSEEK_ENDPOINT", ""),
+        api_key=os.getenv("DEEPSEEK_API_KEY", "")
+    )
+    message = HumanMessage(
+        content=[
+            {"type": "text", "text": "who are you?"}
+        ]
+    )
+    ai_msg = llm.invoke([message])
+    print(ai_msg.content)
+
+
+def test_ollama_model():
+    from langchain_ollama import ChatOllama
+
+    llm = ChatOllama(model="qwen2.5:7b")
+    ai_msg = llm.invoke("Sing a ballad of LangChain.")
+    print(ai_msg.content)
+
+
+if __name__ == '__main__':
+    # test_openai_model()
+    # test_gemini_model()
+    # test_azure_openai_model()
+    # test_deepseek_model()
+    test_ollama_model()
+
+
+================================================
+File: /tests/test_playwright.py
+================================================
+# -*- coding: utf-8 -*-
+# @Time    : 2025/1/2
+# @Author  : wenshao
+# @Email   : wenshaoguo1026@gmail.com
+# @Project : browser-use-webui
+# @FileName: test_playwright.py
+import pdb
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def test_connect_browser():
+    import os
+    from playwright.sync_api import sync_playwright
+
+    chrome_exe = os.getenv("CHROME_PATH", "")
+    chrome_use_data = os.getenv("CHROME_USER_DATA", "")
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch_persistent_context(
+            user_data_dir=chrome_use_data,
+            executable_path=chrome_exe,
+            headless=False  # Keep browser window visible
+        )
+
+        page = browser.new_page()
+        page.goto("https://mail.google.com/mail/u/0/#inbox")
+        page.wait_for_load_state()
+
+        input("Press the Enter key to close the browser...")
+
+        browser.close()
+
+
+if __name__ == '__main__':
+    test_connect_browser()
+
+
